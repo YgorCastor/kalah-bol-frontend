@@ -35,7 +35,7 @@ export class PlayerChooserComponent {
         sessionStorage.setItem("sessionId", session.sessionId);
         await this._router.navigate(['game']);
       } catch (e) {
-        this._snackbar.open(e);
+        this._snackbar.open(e.error.message, "Ok", {duration: 2000});
       }
     }
   }

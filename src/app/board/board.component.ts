@@ -24,12 +24,15 @@ export class BoardComponent {
       const foundSession = await this._gameService.findGameBySession(sessionId).toPromise();
       this.state = foundSession.game.state;
     } catch (e) {
-      this._snackbar.open(e.message);
+      this._snackbar.open(e.error.message, "Ok", {duration: 2000});
     }
   }
 
   get board(): Board {
-    return this.state.board || {};
+    if(this.state) {
+      return this.state.board;
+    }
+    return {};
   }
 
   async move(index: number) {
@@ -38,7 +41,8 @@ export class BoardComponent {
       const currentSession = sessionStorage.getItem("sessionId");
       this.state = await this._gameService.makePlay(currentSession, action).toPromise();
     } catch (e) {
-      this._snackbar.open(e.message);
+      console.log(e);
+      this._snackbar.open(e.error.message, "Ok", {duration: 2000});
     }
   }
 }
